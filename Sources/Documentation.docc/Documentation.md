@@ -1,11 +1,29 @@
-# QueuesMongoDriver
+# ``QueuesMongoDriver``
 
-A driver for [Queues]. Uses [MongoKitten](https://github.com/OpenKitten/MongoKitten) to store job metadata in a MongoDB database.
+@Metadata {
+    @TitleHeading("Package")
+}
+
+A driver for [Queues]. Uses [MongoKitten] to store job metadata in a MongoDB database.
 
 [Queues]: https://github.com/vapor/queues
 [MongoKitten]: https://github.com/OpenKitten/MongoKitten
 
-## Getting Started
+## Overview
+
+This package provides a MongoDB-based driver for Vapor's Queues system, allowing you to store and manage job metadata in a MongoDB database.
+
+## Compatibility
+
+This driver depends on [MongoKitten](https://github.com/OpenKitten/MongoKitten) and is compatible with:
+
+- MongoDB 5.0+
+- Vapor 4.x 
+- Swift 5.9+
+
+## Getting started
+
+#### Adding the dependency
 
 Add `queues-mongo-driver` as dependency to your `Package.swift`:
 ```swift
@@ -26,23 +44,6 @@ targets: [
 ]
 ```
 
-This driver depends on [MongoKitten](https://github.com/OpenKitten/MongoKitten) so to configure the driver we need an instance of a `MongoDatabase`. Ideally during app startup or in your `configure.swift`:
-
-```swift
-import QueuesMongoDriver
-import MongoKitten
-
-func configure(app: Application) throws {
-  let mongoDatabase = try MongoDatabase.lazyConnect(
-    to: "mongodb://localhost:27017/my-database"
-  )
-  
-  // Setup Indexes for the Job Schema for performance (Optional)
-  try app.queues.setupMongo(using: mongoDatabase)
-  app.queues.use(.mongodb(mongoDatabase))
-}
-```
-
 ### Configuration
 
 To configure the MongoDB driver, you'll need a `MongoDatabase` instance:
@@ -58,9 +59,6 @@ try await app.queues.setupMongo(using: database)
 ``` 
 
 This will create the necessary indexes on the MongoDB collection used for storing queue jobs.   
-
-> [!WARNING]
-> Always call `try await app.queues.setupMongo(using: database)` **before** calling `app.queues.use(.mongodb(...))`.
 
 ## Options
 
@@ -92,5 +90,3 @@ The driver creates several indexes on the MongoDB collection to optimize perform
 
 - `job_index` (unique) on `jobid`: This index prevents duplicate jobs from being added to the queue.
 - `queue_index` (unique) on `queue`: This index allows for efficient queue-specific queries.
-
-
