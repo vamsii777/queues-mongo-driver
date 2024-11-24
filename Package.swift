@@ -14,7 +14,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/vapor/vapor.git", from: "4.100.0"),
-        .package(url: "https://github.com/vapor/queues.git", from: "1.15.0"),
+        .package(url: "https://github.com/vamsii777/queues.git", from: "2.0.0-beta.1"),
         .package(url: "https://github.com/OpenKitten/MongoKitten.git", from: "7.9.5")
     ],
     targets: [
